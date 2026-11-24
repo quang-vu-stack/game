@@ -69,3 +69,12 @@ dd { margin: 0; text-align: right; font-weight: 650; }
   .top-stats { gap: 4px; flex-direction: column; align-items: flex-end; }
   .top-stats span { padding: 3px 7px; font-size: .85rem; }
 }
+
+#in-transit {
+  margin-bottom: 12px;
+  padding: 8px 12px;
+  border-radius: 8px;
+  background: #edf1e9;
+}
+#in-transit h3 { margin: 0; font-size: .88rem; }
+#deliveries { margin: 3px 0 0; padding-left: 18px; font-size: .88rem; color: var(--muted); }

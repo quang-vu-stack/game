@@ -1,5 +1,5 @@
-import { addReport, canAct, contract, loadCompany, materialOrderSize, materialPrice, newCompany, runAction,
-  saveCompany, shareCapital, shareholders, siteSnapshot, stageName, workName } from './simulation/company'
+import { addReport, canAct, contract, loadCompany, materialQuote, newCompany, runAction,
+  saveCompany, shareCapital, shareholders, siteSnapshot, stageName, suppliers, workName } from './simulation/company'
 import type { CompanyAction } from './simulation/company'
 import type { MountSite, SiteScene } from './simulation/contracts'
 import './style.css'
@@ -45,6 +45,9 @@ app.innerHTML = `
           <div><dt>Vật tư trong kho</dt><dd id="materials"></dd></div>
           <div id="profit-row" hidden><dt>Kết quả dự án</dt><dd id="profit"></dd></div>
         </dl>
+        <section id="in-transit" hidden aria-label="Lịch giao vật tư">
+          <h3>Đang giao</h3><ul id="deliveries"></ul>
+        </section>
         <div id="actions"></div>
         <p id="feedback" role="status"></p>
       </aside>
@@ -64,7 +67,8 @@ function element<T extends HTMLElement = HTMLElement>(id: string): T {
 const actions: { id: CompanyAction; label: string; result: string }[] = [
   { id: 'accept', label: 'Nhận hợp đồng', result: 'Đã tiếp nhận hợp đồng MV-001.' },
   { id: 'approve', label: 'Duyệt dự toán', result: 'Đã duyệt dự toán công trình.' },
-  { id: 'buy', label: `Mua ${materialOrderSize} lô vật tư · ${money(materialOrderSize * materialPrice)}`, result: 'Vật tư đã nhập kho.' },
+  { id: 'buy', label: '', result: 'Đã đặt vật tư. Xem ngày đến ở mục Đang giao.' },
+  { id: 'buy-express', label: '', result: 'Vật tư giao nhanh đã nhập kho.' },
   { id: 'assign', label: 'Giao việc đội thi công', result: 'Đã giao việc cho chỉ huy công trường.' },
   { id: 'next-day', label: 'Qua ngày', result: 'Đã cập nhật tiến độ trong ngày.' },
   { id: 'deliver', label: 'Nghiệm thu và nhận thanh toán', result: 'Chủ đầu tư đã thanh toán hợp đồng.' },
@@ -116,7 +120,23 @@ function render() {
   element('profit-row').hidden = state.project !== 'delivered'
   element('profit').textContent = money(state.revenue - state.spending)
 
-  actions.forEach(action => { element(`action-${action.id}`).hidden = !canAct(state, action.id) })
+  for (const action of actions) {
+    const button = element<HTMLButtonElement>(`action-${action.id}`)
+    button.hidden = !canAct(state, action.id)
+    if (action.id === 'buy' || action.id === 'buy-express') {
+      const { lots, cost, day } = materialQuote(state, action.id)
+      const arrival = day === state.day ? 'nhận ngay' : `ngày ${day}`
+      button.textContent = `${suppliers[action.id].label} ${lots} lô · ${money(cost)} · ${arrival}`
+    }
+  }
+  element('in-transit').hidden = state.deliveries.length === 0
+  const deliveries = element('deliveries')
+  deliveries.replaceChildren()
+  for (const delivery of state.deliveries) {
+    const item = document.createElement('li')
+    item.textContent = `Ngày ${delivery.day} · ${delivery.lots} lô vật tư`
+    deliveries.append(item)
+  }
   const reports = element('reports')
   reports.replaceChildren()
   for (const report of state.reports) {

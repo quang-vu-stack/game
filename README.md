@@ -11,7 +11,7 @@ npm ci
 npm run dev
 ```
 
-Mở địa chỉ Vite in ra. Kéo chuột để xoay cảnh và cuộn để thu phóng. Nhận hợp đồng, duyệt dự toán, mua vật tư và giao việc. Nút **Qua ngày** cho đội thi công tiến thêm một ngày. Mỗi ngày thi công dùng một lô vật tư. Khi đạt 100%, nghiệm thu để nhận thanh toán. Game lưu tiến độ trên trình duyệt hiện tại.
+Mở địa chỉ Vite in ra. Kéo chuột để xoay cảnh và cuộn để thu phóng. Nhận hợp đồng, duyệt dự toán, mua vật tư và giao việc. Chọn **Giao thường** để nhận sau hai ngày hoặc **Giao nhanh** để nhập kho ngay với giá cao hơn. Xem ngày hàng đến ở mục **Đang giao**. Nút **Qua ngày** cập nhật lịch giao và cho đội thi công làm việc nếu kho có đủ vật tư. Mỗi ngày thi công dùng một lô vật tư. Khi đạt 100%, nghiệm thu để nhận thanh toán. Game lưu tiến độ trên trình duyệt hiện tại.
 
 ```sh
 npm test
