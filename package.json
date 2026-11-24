@@ -1,0 +1,15 @@
+{
+  "name": "mong-viet-3d",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc --noEmit && vite build",
+    "preview": "vite preview",
+    "test": "node --experimental-strip-types --disable-warning=ExperimentalWarning --test"
+  },
+  "dependencies": { "three": "^0.180.0" },
+  "devDependencies": { "@types/three": "^0.180.0", "typescript": "~5.9.3", "vite": "^7.2.2" },
+  "engines": { "node": ">=22.13.0" }
+}
